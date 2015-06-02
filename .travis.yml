@@ -1,24 +1,26 @@
-# Sample .travis.yml for R projects.
-#
-# See the r-travis repo and its wiki 
-#   https://github.com/craigcitro/r-travis/wiki
-#   https://github.com/eddelbuettel/r-travis/
-
 language: c
+
+sudo: required
 
 env:
   global:
-    - _R_CHECK_FORCE_SUGGESTS_=FALSE
+    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+    - RunAllRcppTests="yes"
+    - CRAN="http://cran.us.r-project.org"
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
+  - sudo add-apt-repository -y ppa:edd/misc
+  - sudo apt-get update -q
 
 install:
+  ## note that we currently depend on highlight 0.4.4.1 from the PPA as 0.4.5 has issues
   - ./travis-tool.sh install_aptget libprotobuf-dev libprotoc-dev protobuf-
   - ./travis-tool.sh install_github thirdwing/Rcpp
-  - ./travis-tool.sh install_r RCurl RUnit highlight
+  - ./travis-tool.sh install_aptget r-cran-runit r-cran-inline r-cran-rbenchmark r-cran-highlight r-cran-pkgkitten
 
 script: 
   - ./travis-tool.sh run_tests
@@ -30,3 +32,6 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
+    
+
