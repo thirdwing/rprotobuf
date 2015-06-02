@@ -16,8 +16,9 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - ./travis-tool.sh install_aptget libprotobuf-dev libprotoc-dev protobuf-compiler
-  - ./travis-tool.sh install_r Rcpp RCurl RUnit highlight
+  - ./travis-tool.sh install_aptget libprotobuf-dev libprotoc-dev protobuf-
+  - ./travis-tool.sh install_github thirdwing/Rcpp
+  - ./travis-tool.sh install_r RCurl RUnit highlight
 
 script: 
   - ./travis-tool.sh run_tests
